@@ -1,3 +1,4 @@
+// components/ProductCard.tsx
 "use client";
 
 import React from 'react';
@@ -18,6 +19,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   image,
   addToCart,
 }) => {
+  const formattedPrice = new Intl.NumberFormat('es-ES').format(price);
+
   return (
     <div className="flex flex-col border rounded-lg p-4 h-full">
       <div className="flex-grow flex items-center justify-center bg-gray-100 overflow-hidden rounded-md">
@@ -25,16 +28,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Image
             src={image}
             alt={name}
-            fill // Ocupa todo el contenedor
+            fill
             className="object-contain object-center"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            priority
+            // priority // Eliminado
           />
         </div>
       </div>
       <div className="mt-4 flex flex-col items-center">
         <h2 className="text-lg font-semibold text-center">{name}</h2>
-        <p className="text-gray-700 mt-2 text-center">${price.toLocaleString()}</p>
+        <p className="text-gray-700 mt-2 text-center">
+          ${formattedPrice}
+        </p>
         <button
           onClick={() => addToCart({ id, name, price })}
           className="bg-blue-500 text-white px-4 py-2 mt-4 rounded-md w-full hover:bg-blue-600 transition-colors duration-200"

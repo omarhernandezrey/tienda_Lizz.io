@@ -28,34 +28,33 @@ const AboutPage: React.FC = () => {
           </div>
         </div>
 
-{/* Sección de imágenes destacadas */}
-<div className="mb-12 bg-gradient-to-b from-gray-50 to-white p-6 sm:p-10 md:p-12 lg:p-16 rounded-3xl shadow-2xl">
-  <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-8 sm:mb-12 text-blue-900 text-center tracking-wide">
-    Nuestros Productos Destacados
-  </h2>
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
-    {[1, 2, 3].map((item) => (
-      <div
-        key={item}
-        className="group relative overflow-hidden rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-500"
-      >
-        <Image
-          src={`/images/Bolso_Destacado_${item}.jpg`}
-          alt={`Bolso Destacado ${item}`}
-          width={400}
-          height={400}
-          className="object-cover w-full h-full group-hover:opacity-80 transition-opacity duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-500 flex items-end p-4">
-          <h3 className="text-white text-lg sm:text-xl md:text-2xl font-bold">
-            Bolso Elegante {item}
-          </h3>
+        {/* Sección de imágenes destacadas */}
+        <div className="mb-12 bg-gradient-to-b from-gray-50 to-white p-6 sm:p-10 md:p-12 lg:p-16 rounded-3xl shadow-2xl">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-8 sm:mb-12 text-blue-900 text-center tracking-wide">
+            Nuestros Productos Destacados
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+            {[1, 2, 3].map((item) => (
+              <div
+                key={item}
+                className="group relative overflow-hidden rounded-xl shadow-lg transform hover:scale-105 transition-transform duration-500"
+              >
+                <Image
+                  src={`/images/Bolso_Destacado_${item}.jpg`}
+                  alt={`Bolso Destacado ${item}`}
+                  width={400}
+                  height={400}
+                  className="object-cover w-full h-full group-hover:opacity-80 transition-opacity duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-500 flex items-end p-4">
+                  <h3 className="text-white text-lg sm:text-xl md:text-2xl font-bold">
+                    Bolso Elegante {item}
+                  </h3>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
-  </div>
-</div>
-
 
         {/* Sección de contenido */}
         <div className="text-gray-800 leading-relaxed bg-gradient-to-b from-gray-100 to-white p-6 sm:p-8 md:p-10 lg:p-12 shadow-lg rounded-lg">
