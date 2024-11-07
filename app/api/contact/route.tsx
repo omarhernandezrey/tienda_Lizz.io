@@ -23,11 +23,19 @@ export async function POST(request: Request) {
     // Intentar enviar el correo
     await sgMail.send(msg);
     return NextResponse.json({ message: 'Correo enviado exitosamente' }, { status: 200 });
-  } catch (error: any) {
-    console.error('Error al enviar el correo:', error?.response?.body || error.message);
-    return NextResponse.json(
-      { message: 'Error al enviar el correo', error: error?.response?.body || error.message },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error al enviar el correo:', error.message);
+      return NextResponse.json(
+        { message: 'Error al enviar el correo', error: error.message },
+        { status: 500 }
+      );
+    } else {
+      console.error('Error desconocido:', error);
+      return NextResponse.json(
+        { message: 'Error al enviar el correo', error: 'Error desconocido' },
+        { status: 500 }
+      );
+    }
   }
 }
