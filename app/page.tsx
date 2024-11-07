@@ -1,7 +1,6 @@
 // app/page.tsx
 import React from 'react';
 import ProductList from '../components/ProductList';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FaShippingFast, FaLock, FaWallet } from 'react-icons/fa';
 
