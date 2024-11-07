@@ -1,4 +1,3 @@
-// components/ProductCard.tsx
 "use client";
 
 import React from 'react';
@@ -26,9 +25,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Image
             src={image}
             alt={name}
-            layout="fill" // Ocupa todo el contenedor
-            objectFit="contain" // Se adapta sin recortar contenido
-            className="object-center"
+            fill // Ocupa todo el contenedor
+            className="object-contain object-center"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            priority
           />
         </div>
       </div>
