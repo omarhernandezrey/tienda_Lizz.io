@@ -1,0 +1,8 @@
+/* styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* styles/globals.css */
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/700.css';
