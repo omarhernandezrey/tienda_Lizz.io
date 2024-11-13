@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { FaFacebookF, FaInstagram, FaTwitter, FaWhatsapp } from 'react-icons/fa';
 
+
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
     nombre: '',

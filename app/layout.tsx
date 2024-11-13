@@ -2,6 +2,8 @@
 import '../styles/globals.css';
 import Providers from '../components/Providers';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+
 
 export const metadata = {
   title: 'Tienda de Bolsos',
@@ -19,6 +21,7 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           {children}
+          <Footer /> {/* Añadir el Footer aquí para que aparezca en todas las páginas */}
         </Providers>
       </body>
     </html>

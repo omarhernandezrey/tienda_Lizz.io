@@ -3,6 +3,8 @@ import React from 'react';
 import ProductList from '../components/ProductList';
 import Link from 'next/link';
 import { FaShippingFast, FaLock, FaWallet } from 'react-icons/fa';
+import Footer from '../components/Footer';
+
 
 const HomePage = () => {
   return (
