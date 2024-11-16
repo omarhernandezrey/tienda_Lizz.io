@@ -57,7 +57,7 @@ const Footer: React.FC = () => {
         <div className="flex justify-center md:justify-end space-x-6 mb-6">
           {[
             { href: 'https://facebook.com', icon: FaFacebookF, color: 'text-blue-500' },
-            { href: 'https://instagram.com', icon: FaInstagram, color: 'text-pink-500' },
+            { href: 'https://www.instagram.com/lederliz_accesorios/profilecard/?igsh=MTkwaDRpcXBmbGJkaQ==', icon: FaInstagram, color: 'text-pink-500' },
             { href: 'https://twitter.com', icon: FaTwitter, color: 'text-blue-400' },
             { href: 'https://wa.me/573142470366', icon: FaWhatsapp, color: 'text-green-500' }
           ].map(({ href, icon: Icon, color }, index) => (

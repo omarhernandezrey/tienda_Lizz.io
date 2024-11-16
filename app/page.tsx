@@ -1,57 +1,50 @@
-// app/page.tsx
-import React from 'react';
-import ProductList from '../components/ProductList';
-import Link from 'next/link';
-import { FaShippingFast, FaLock, FaWallet } from 'react-icons/fa';
+"use client";
 
-
+import React from "react";
+import AdvancedCarousel from "../components/AdvancedCarousel";
+import IntroSection from "../components/IntroSection";
+import ProductList from "../components/ProductList";
 
 const HomePage = () => {
+  const images = [
+    "/images/carrusel1.jpg",
+    "/images/carrusel2.jpg",
+    "/images/bolso22.jpg",
+    "/images/bolso23.jpg",
+    "/images/bolso24.jpg",
+    "/images/bolso22.jpg",
+    "/images/bolso23.jpg",
+    "/images/bolso24.jpg",
+    "/images/bolso26.jpg",
+    "/images/bolso27.jpg",
+    "/images/bolso28.jpg",
+    "/images/bolso29.jpg",
+    "/images/bolso30.jpg",
+    "/images/bolso31.jpg",
+    "/images/bolso32.jpg",
+    "/images/bolso33.jpg",
+  ];
+
   return (
-    <div>
-      {/* Sección introductoria */}
-      <div className="pt-24 bg-gray-100">
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-5xl font-bold mb-6 text-gray-800">
-            Bienvenido a Nuestra Tienda de Bolsos de Cuero
-          </h1>
-          <p className="text-xl text-gray-700 max-w-2xl mx-auto">
-            Descubre los mejores bolsos de cuero elegantes y de alta calidad al mejor precio. Diseños exclusivos y modernos que se adaptan a tu estilo.
-          </p>
-          <p className="text-xl text-gray-700 max-w-2xl mx-auto mt-4">
-            Ofrecemos opciones de pago fáciles y seguras a través de <strong>Nequi</strong> y <strong>Daviplata</strong>. ¡Compra ahora y recibe en la puerta de tu casa!
-          </p>
+    <div className="bg-white">
+      {/* Sección Introductoria */}
+      <IntroSection />
 
-          {/* Iconos de características */}
-          <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 mt-8">
-            <div className="flex items-center">
-              <FaShippingFast className="text-3xl text-blue-600 mr-2" />
-              <span className="text-lg">Envíos a Todo el País</span>
-            </div>
-            <div className="flex items-center">
-              <FaLock className="text-3xl text-blue-600 mr-2" />
-              <span className="text-lg">Pago Seguro</span>
-            </div>
-            <div className="flex items-center">
-              <FaWallet className="text-3xl text-blue-600 mr-2" />
-              <span className="text-lg">Nequi y Daviplata</span>
-            </div>
-          </div>
-
-          {/* Botón CTA */}
-          <div className="mt-8">
-            <Link
-              href="/productos"
-              className="bg-blue-600 text-white px-8 py-3 rounded-full text-xl hover:bg-blue-700 transition-colors duration-300"
-            >
-              Ver Productos
-            </Link>
-          </div>
-        </div>
+      {/* Carrusel Avanzado */}
+      <div className="my-15">
+        <AdvancedCarousel images={images} autoPlay={true} interval={3000} />
       </div>
 
-      {/* Lista de productos */}
+      {/* Lista de Productos */}
       <ProductList />
+
+      {/* Otra Sección */}
+      <div className="my-10 text-center">
+        <h2 className="text-2xl font-bold">¡Descubre nuestras ofertas!</h2>
+        <p className="mt-4 text-gray-600">
+          Encuentra los mejores bolsos a precios increíbles.
+        </p>
+      </div>
     </div>
   );
 };

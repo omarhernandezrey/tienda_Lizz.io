@@ -174,16 +174,16 @@ const Navbar: React.FC = () => {
 
             {/* Redes Sociales */}
             <div className="mt-8 flex justify-around space-x-4">
-              <Link href="#">
+              <Link href="https://www.facebook.com/share/15Zz37gpUp/">
                 <FaFacebookF className="text-white text-2xl hover:text-teal-400 transition duration-200" />
               </Link>
-              <Link href="#">
+              <Link href="https://www.instagram.com/lederliz_accesorios/profilecard/?igsh=MTkwaDRpcXBmbGJkaQ==">
                 <FaInstagram className="text-white text-2xl hover:text-teal-400 transition duration-200" />
               </Link>
               <Link href="#">
                 <FaTwitter className="text-white text-2xl hover:text-teal-400 transition duration-200" />
               </Link>
-              <Link href="#">
+              <Link href="https://wa.me/573142470366">
                 <FaWhatsapp className="text-white text-2xl hover:text-teal-400 transition duration-200" />
               </Link>
             </div>
