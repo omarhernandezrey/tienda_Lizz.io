@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import Providers from '../components/Providers';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import FloatingWhatsAppButton from '../components/FloatingWhatsAppButton';
 
 
 export const metadata = {
@@ -21,8 +22,9 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           {children}
-          <Footer /> {/* Añadir el Footer aquí para que aparezca en todas las páginas */}
+          <Footer /> 
         </Providers>
+        <FloatingWhatsAppButton />
       </body>
     </html>
   );
