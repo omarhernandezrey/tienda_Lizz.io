@@ -3,6 +3,7 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import Image from "next/image";
+import PaymentModal from "./PaymentModal";
 
 const Cart: React.FC = () => {
   const { cartItems, removeFromCart } = useContext(CartContext);
@@ -13,12 +14,10 @@ const Cart: React.FC = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:px-8 lg:px-16">
-      {/* Título del carrito */}
-      <h1 className="text-3xl font-bold mb-8 text-center text-gray-800 z-10">
+    <div className="container mx-auto p-6 sm:p-16">
+      <h1 className="text-3xl font-bold mb-10 text-center p-6">
         Carrito de Compras
       </h1>
-
       {cartItems.length === 0 ? (
         <p className="text-center text-gray-500">Tu carrito está vacío.</p>
       ) : (
@@ -29,7 +28,6 @@ const Cart: React.FC = () => {
               className="flex items-center justify-between p-4 border rounded-md shadow-sm"
             >
               <div className="flex items-center space-x-4">
-                {/* Renderizar imagen si existe */}
                 {item.image && (
                   <Image
                     src={item.image}
@@ -60,6 +58,8 @@ const Cart: React.FC = () => {
           <div className="text-right mt-6">
             <h2 className="text-2xl font-bold">Total: ${total}</h2>
           </div>
+          {/* Integración del modal */}
+          <PaymentModal cartItems={cartItems} total={total} />
         </div>
       )}
     </div>

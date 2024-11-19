@@ -1,12 +1,18 @@
-// components/FloatingWhatsAppButton.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 
-const FloatingWhatsAppButton: React.FC = () => {
+interface FloatingWhatsAppButtonProps {
+  customMessage?: string; // Propiedad opcional para cambiar el mensaje
+}
+
+const FloatingWhatsAppButton: React.FC<FloatingWhatsAppButtonProps> = ({
+  customMessage,
+}) => {
   const whatsappNumber = "573142470366"; // Número de WhatsApp con el prefijo internacional
-  const message = encodeURIComponent(
+
+  const defaultMessage = encodeURIComponent(
     "Hola, estoy interesado en los productos de cuero que ofrecen en la tienda. ¿Me pueden dar más información, por favor?"
   );
 
@@ -27,6 +33,8 @@ const FloatingWhatsAppButton: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const message = encodeURIComponent(customMessage || defaultMessage);
 
   return (
     <div
