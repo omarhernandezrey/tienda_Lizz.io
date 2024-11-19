@@ -1,18 +1,18 @@
-// context/CartContext.tsx
 "use client";
 
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from "react";
 
 interface CartItem {
   id: string;
   name: string;
   price: number;
   quantity: number;
+  image: string; // Nueva propiedad
 }
 
 interface CartContextProps {
   cartItems: CartItem[];
-  addToCart: (product: Omit<CartItem, 'quantity'>) => void;
+  addToCart: (product: Omit<CartItem, "quantity">) => void;
   removeFromCart: (id: string) => void;
 }
 
@@ -27,7 +27,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const addToCart = (product: Omit<CartItem, 'quantity'>) => {
+  const addToCart = (product: Omit<CartItem, "quantity">) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
       if (existingItem) {

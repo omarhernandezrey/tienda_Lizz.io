@@ -53,11 +53,11 @@ const AdvancedCarousel: React.FC<AdvancedCarouselProps> = ({
   };
 
   return (
-    <div className="relative flex items-center justify-center bg-white py-10 overflow-hidden">
+    <div className="relative flex items-center justify-center bg-transparent py-10 overflow-hidden">
       {/* Botón Anterior */}
       <button
         onClick={handlePrev}
-        className="absolute left-2 sm:left-3 md:left-4 text-white text-2xl bg-gray-700 p-3 rounded-full hover:bg-gray-800 z-10"
+        className="absolute left-2 sm:left-3 md:left-4 text-gray-800 text-2xl bg-gray-200 p-3 rounded-full hover:bg-gray-300 z-10"
       >
         &lt;
       </button>
@@ -74,10 +74,14 @@ const AdvancedCarousel: React.FC<AdvancedCarouselProps> = ({
             <img
               src={image}
               alt={`Image ${index + 1}`}
-              className="w-40 h-56 sm:w-48 sm:h-64 md:w-56 md:h-72 lg:w-64 lg:h-80 object-contain rounded-lg shadow-lg"
+              className="w-40 h-56 sm:w-48 sm:h-64 md:w-56 md:h-72 lg:w-64 lg:h-80 object-contain"
               onError={(e) => {
                 e.currentTarget.src = "/images/placeholder.jpg"; // Imagen de respaldo si falla la carga
                 e.currentTarget.alt = "Imagen no encontrada";
+              }}
+              style={{
+                background: "none", // Quitar fondo
+                boxShadow: "none", // Sin sombras
               }}
             />
           </div>
@@ -87,7 +91,7 @@ const AdvancedCarousel: React.FC<AdvancedCarouselProps> = ({
       {/* Botón Siguiente */}
       <button
         onClick={handleNext}
-        className="absolute right-2 sm:right-3 md:right-4 text-white text-2xl bg-gray-700 p-3 rounded-full hover:bg-gray-800 z-10"
+        className="absolute right-2 sm:right-3 md:right-4 text-gray-800 text-2xl bg-gray-200 p-3 rounded-full hover:bg-gray-300 z-10"
       >
         &gt;
       </button>
