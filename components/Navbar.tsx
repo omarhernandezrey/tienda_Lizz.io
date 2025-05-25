@@ -4,6 +4,8 @@ import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { CartContext } from "../context/CartContext";
+import { GENERAL_IMAGES } from '../data/productsData';
+// Usar: GENERAL_IMAGES.logo
 
 // SVG Icons
 const MenuIcon = () => (
@@ -32,7 +34,7 @@ const Navbar = () => {
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -48,95 +50,154 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      isScrolled 
-        ? "bg-slate-900/95 backdrop-blur-lg border-b border-amber-900/30 shadow-2xl" 
-        : "bg-transparent"
-    }`}>
+    <nav 
+      className={`fixed top-0 left-0 right-0 transition-all duration-300 ${
+        isScrolled 
+          ? "bg-slate-900/98 backdrop-blur-xl border-b border-amber-500/20 shadow-xl" 
+          : "bg-slate-900/50 backdrop-blur-md"
+      }`}
+      style={{ zIndex: 1000 }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 lg:h-18">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
+          <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
             <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl font-bold text-white">EC</span>
+              {/* Logo Icon */}
+              <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-all duration-300 border border-amber-400/30">
+                <span className="text-lg lg:text-xl font-black text-white tracking-tight">EC</span>
               </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-orange-400 to-red-500 rounded-full animate-pulse" />
+              {/* Accent dot */}
+              <div className="absolute -top-1 -right-1 w-3 h-3 lg:w-4 lg:h-4 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full animate-pulse shadow-md" />
             </div>
+            
+            {/* Brand Text */}
             <div className="hidden sm:block">
-              <h1 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
+              <h1 className="text-lg lg:text-xl xl:text-2xl font-bold bg-gradient-to-r from-amber-200 via-amber-300 to-orange-400 bg-clip-text text-transparent leading-tight">
                 Elegancia en Cuero
               </h1>
-              <p className="text-xs text-gray-400">Bolsos de Lujo Artesanales</p>
+              <p className="text-xs lg:text-sm text-amber-400/80 font-medium tracking-wide">
+                Artesanía Premium
+              </p>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Redesigned */}
+          <div className="hidden lg:flex items-center space-x-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative px-4 py-2 text-gray-300 hover:text-amber-300 transition-colors duration-300 group"
+                className="relative px-4 py-2 text-gray-200 hover:text-amber-300 transition-all duration-300 group rounded-lg"
               >
-                <span className="relative z-10 font-medium">{link.label}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-600/0 to-orange-600/0 group-hover:from-amber-600/20 group-hover:to-orange-600/20 rounded-lg transition-all duration-300" />
-                <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-orange-500 group-hover:w-full group-hover:left-0 transition-all duration-300" />
+                <span className="relative z-10 font-medium text-sm xl:text-base">
+                  {link.label}
+                </span>
+                {/* Hover background */}
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-orange-500/0 to-red-500/0 group-hover:from-amber-500/10 group-hover:via-orange-500/10 group-hover:to-red-500/10 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100" />
+                {/* Active indicator */}
+                <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-orange-500 group-hover:w-3/4 group-hover:left-1/8 transition-all duration-300 rounded-full" />
               </Link>
             ))}
           </div>
 
-          {/* Cart and Mobile Menu */}
-          <div className="flex items-center space-x-4">
-            {/* Cart Button */}
+          {/* Right Section */}
+          <div className="flex items-center space-x-3">
+            {/* Cart Button - Redesigned */}
             <Link href="/cart" className="relative group">
-              <div className="w-12 h-12 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-amber-600 hover:to-orange-600 rounded-xl flex items-center justify-center transition-all duration-300 border border-amber-900/30 hover:border-amber-500/50 shadow-lg">
+              <div className={`w-10 h-10 lg:w-11 lg:h-11 bg-gradient-to-br from-slate-700/80 to-slate-800/80 hover:from-amber-600 hover:to-orange-600 rounded-xl flex items-center justify-center transition-all duration-300 border border-amber-500/20 hover:border-amber-400/50 shadow-md hover:shadow-lg group-hover:scale-105 ${
+                totalItems > 0 ? 'ring-2 ring-amber-400/30' : ''
+              }`}>
                 <ShoppingBagIcon />
               </div>
+              {/* Cart badge */}
               {totalItems > 0 && (
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                  <span className="text-xs font-bold text-white">{totalItems}</span>
+                <div className="absolute -top-1 -right-1 w-5 h-5 lg:w-6 lg:h-6 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg animate-bounce">
+                  <span className="text-xs lg:text-sm font-bold text-white">
+                    {totalItems > 99 ? '99+' : totalItems}
+                  </span>
                 </div>
               )}
             </Link>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Redesigned */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden w-12 h-12 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-amber-600 hover:to-orange-600 rounded-xl flex items-center justify-center transition-all duration-300 border border-amber-900/30 hover:border-amber-500/50"
+              className="lg:hidden w-10 h-10 bg-gradient-to-br from-slate-700/80 to-slate-800/80 hover:from-amber-600 hover:to-orange-600 rounded-xl flex items-center justify-center transition-all duration-300 border border-amber-500/20 hover:border-amber-400/50 shadow-md"
             >
-              {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+              <div className="relative w-6 h-6">
+                <div className={`absolute inset-0 transition-all duration-300 ${isMenuOpen ? 'rotate-180 opacity-0' : 'rotate-0 opacity-100'}`}>
+                  <MenuIcon />
+                </div>
+                <div className={`absolute inset-0 transition-all duration-300 ${isMenuOpen ? 'rotate-0 opacity-100' : 'rotate-180 opacity-0'}`}>
+                  <CloseIcon />
+                </div>
+              </div>
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <div className={`md:hidden transition-all duration-500 overflow-hidden ${
-          isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        {/* Mobile Menu - Completely Redesigned */}
+        <div className={`lg:hidden transition-all duration-400 ease-in-out overflow-hidden ${
+          isMenuOpen ? "max-h-screen opacity-100 pb-6" : "max-h-0 opacity-0 pb-0"
         }`}>
-          <div className="py-6 space-y-4 bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-lg rounded-2xl border border-amber-900/30 mt-4">
-            {navLinks.map((link, index) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsMenuOpen(false)}
-                className="block px-6 py-3 text-gray-300 hover:text-amber-300 hover:bg-amber-900/20 transition-all duration-300 border-l-4 border-transparent hover:border-amber-500"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <span className="font-medium">{link.label}</span>
-              </Link>
-            ))}
+          <div className="mt-4 bg-gradient-to-br from-slate-800/95 via-slate-900/95 to-slate-950/95 backdrop-blur-xl rounded-2xl border border-amber-500/20 shadow-2xl overflow-hidden">
+            {/* Mobile Navigation Links */}
+            <div className="p-4 space-y-1">
+              {navLinks.map((link, index) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="group flex items-center px-4 py-4 text-gray-200 hover:text-amber-300 hover:bg-gradient-to-r hover:from-amber-500/10 hover:to-orange-500/10 transition-all duration-300 rounded-xl border-l-4 border-transparent hover:border-amber-400"
+                  style={{ 
+                    animationDelay: `${index * 80}ms`,
+                    animation: isMenuOpen ? 'slideInLeft 0.4s ease-out forwards' : 'none'
+                  }}
+                >
+                  <div className="flex items-center space-x-4 w-full">
+                    <div className="w-2 h-2 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="font-medium text-base">{link.label}</span>
+                    <div className="ml-auto w-0 group-hover:w-6 h-0.5 bg-gradient-to-r from-amber-400 to-orange-500 transition-all duration-300 rounded-full" />
+                  </div>
+                </Link>
+              ))}
+            </div>
             
-            {/* Mobile Cart Info */}
-            <div className="px-6 py-3 border-t border-amber-900/30 mt-4">
+            {/* Mobile Cart Summary */}
+            <div className="px-4 py-4 border-t border-amber-500/20 bg-gradient-to-r from-slate-800/50 to-slate-900/50">
               <div className="flex items-center justify-between">
-                <span className="text-gray-400">Productos en carrito:</span>
-                <span className="text-amber-300 font-bold">{totalItems}</span>
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
+                    <ShoppingBagIcon />
+                  </div>
+                  <span className="text-gray-300 font-medium">Carrito</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-amber-300 font-bold text-lg">{totalItems}</span>
+                  <span className="text-gray-400 text-sm">
+                    {totalItems === 1 ? 'producto' : 'productos'}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Custom keyframes for mobile menu animation */}
+      <style jsx>{`
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+      `}</style>
     </nav>
   );
 };

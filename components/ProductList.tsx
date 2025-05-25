@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
+import { products, getCategories, type Product } from "../data/productsData";
 
 // SVG Icons
 const FilterIcon = () => (
@@ -22,87 +23,19 @@ const GridIcon = () => (
   </svg>
 );
 
-// Sample products data - En tu proyecto real, esto vendrá de productsData.ts
-const sampleProducts = [
-  {
-    id: "1",
-    name: "Bolso Elegante Heritage Classic",
-    price: 150000,
-    originalPrice: 180000,
-    image: "/images/bolso1.jpg",
-    category: "Heritage",
-    rating: 4.8,
-    isNew: false,
-    isBestSeller: true,
-  },
-  {
-    id: "2",
-    name: "Cartera Modern Luxe Executive",
-    price: 89000,
-    originalPrice: 120000,
-    image: "/images/bolso2.jpg",
-    category: "Modern Luxe",
-    rating: 4.6,
-    isNew: true,
-    isBestSeller: false,
-  },
-  {
-    id: "3",
-    name: "Bolso Artisan Series Handmade",
-    price: 220000,
-    image: "/images/bolso3.jpg",
-    category: "Artisan",
-    rating: 4.9,
-    isNew: false,
-    isBestSeller: true,
-  },
-  {
-    id: "4",
-    name: "Cartera Casual Weekend",
-    price: 75000,
-    image: "/images/bolso4.jpg",
-    category: "Casual",
-    rating: 4.3,
-    isNew: true,
-    isBestSeller: false,
-  },
-  {
-    id: "5",
-    name: "Bolso Premium Elite Collection",
-    price: 350000,
-    originalPrice: 420000,
-    image: "/images/bolso5.jpg",
-    category: "Premium",
-    rating: 5.0,
-    isNew: false,
-    isBestSeller: true,
-  },
-  {
-    id: "6",
-    name: "Cartera Compact Urban",
-    price: 95000,
-    image: "/images/bolso6.jpg",
-    category: "Urban",
-    rating: 4.4,
-    isNew: true,
-    isBestSeller: false,
-  },
-];
-
 const ProductList: React.FC = () => {
-  const [products, setProducts] = useState(sampleProducts);
-  const [filteredProducts, setFilteredProducts] = useState(sampleProducts);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [sortBy, setSortBy] = useState("featured");
   const [gridCols, setGridCols] = useState(3);
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const categories = ["Todos", ...Array.from(new Set(products.map(p => p.category)))];
+  // Get categories from the actual data
+  const categories = ["Todos", ...getCategories()];
 
   // Filter and search logic
   useEffect(() => {
-    let filtered = products;
+    let filtered = [...products];
 
     // Filter by category
     if (selectedCategory !== "Todos") {
@@ -113,7 +46,8 @@ const ProductList: React.FC = () => {
     if (searchTerm) {
       filtered = filtered.filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.category?.toLowerCase().includes(searchTerm.toLowerCase())
+        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -125,24 +59,19 @@ const ProductList: React.FC = () => {
       case "price-high":
         filtered.sort((a, b) => b.price - a.price);
         break;
-      case "rating":
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
       case "name":
         filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
+      case "category":
+        filtered.sort((a, b) => a.category.localeCompare(b.category));
+        break;
       default: // featured
-        filtered.sort((a, b) => {
-          if (a.isBestSeller && !b.isBestSeller) return -1;
-          if (!a.isBestSeller && b.isBestSeller) return 1;
-          if (a.isNew && !b.isNew) return -1;
-          if (!a.isNew && b.isNew) return 1;
-          return 0;
-        });
+        // Keep original order for featured
+        break;
     }
 
     setFilteredProducts(filtered);
-  }, [products, selectedCategory, searchTerm, sortBy]);
+  }, [selectedCategory, searchTerm, sortBy]);
 
   return (
     <div className="relative">
@@ -191,8 +120,8 @@ const ProductList: React.FC = () => {
               <option value="featured">Destacados</option>
               <option value="price-low">Precio: Menor a Mayor</option>
               <option value="price-high">Precio: Mayor a Menor</option>
-              <option value="rating">Mejor Calificados</option>
               <option value="name">Nombre A-Z</option>
+              <option value="category">Por Categoría</option>
             </select>
 
             {/* Grid View Controls */}
@@ -279,13 +208,6 @@ const ProductList: React.FC = () => {
           </button>
         </div>
       )}
-
-      {/* Loading Animation for Future Use */}
-      <div className="hidden">
-        <div className="flex justify-center items-center py-20">
-          <div className="loading-spinner"></div>
-        </div>
-      </div>
     </div>
   );
 };

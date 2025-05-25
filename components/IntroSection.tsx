@@ -1,7 +1,16 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
+import { 
+  GENERAL_IMAGES, 
+  CAROUSEL_IMAGES, 
+  getRandomCarouselImage,
+  getCarouselImages,
+  products,
+  getCategories 
+} from '../data/productsData';
 
 // SVG Icons
 const ShippingIcon = () => (
@@ -40,9 +49,55 @@ const BankIcon = () => (
   </svg>
 );
 
+const StatsIcon = () => (
+  <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+  </svg>
+);
+
 const IntroSection = () => {
+  const [heroBackground, setHeroBackground] = useState('');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [carouselImages, setCarouselImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Configurar imágenes del carrusel para el fondo
+    const images = getCarouselImages();
+    setCarouselImages(images);
+    setHeroBackground(images[0]);
+
+    // Cambiar imagen de fondo cada 8 segundos
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => {
+        const nextIndex = (prev + 1) % images.length;
+        setHeroBackground(images[nextIndex]);
+        return nextIndex;
+      });
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const categories = getCategories();
+  const totalProducts = products.length;
+
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-amber-900 text-white overflow-hidden">
+      {/* Dynamic Hero Background */}
+      {heroBackground && (
+        <div className="absolute inset-0">
+          <Image
+            src={heroBackground}
+            alt="Elegancia en Cuero - Fondo Hero"
+            fill
+            className="object-cover transition-opacity duration-2000"
+            priority
+            quality={90}
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/50 to-amber-900/70" />
+        </div>
+      )}
+
       {/* Animated Background Elements */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-r from-amber-400 to-orange-600 rounded-full blur-3xl animate-pulse" />
@@ -52,20 +107,53 @@ const IntroSection = () => {
 
       <div className="relative z-10 pt-24 pb-16">
         <div className="container mx-auto text-center px-6">
+          {/* Brand Logo */}
+          <div className="mb-8">
+            <Image
+              src={GENERAL_IMAGES.logo}
+              alt="Elegancia en Cuero Logo"
+              width={120}
+              height={120}
+              className="mx-auto opacity-95 drop-shadow-2xl"
+            />
+          </div>
+
           {/* Hero Section */}
           <div className="mb-16">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-amber-300 via-orange-400 to-amber-500 bg-clip-text text-transparent drop-shadow-2xl tracking-tight leading-tight">
-              Bienvenido a Nuestra Tienda de Bolsos
+              ELEGANCIA EN CUERO
             </h1>
+            <div className="text-2xl sm:text-3xl md:text-4xl font-light text-amber-100 mb-8 tracking-widest">
+              Bolsos de Lujo Artesanales
+            </div>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-200 max-w-4xl mx-auto mb-12 leading-relaxed font-light">
-              Encuentra bolsos de cuero <span className="text-amber-400 font-semibold">elegantes y de alta calidad</span>. 
+              Descubre nuestra colección de <span className="text-amber-400 font-semibold">{totalProducts} productos únicos</span> en 
+              <span className="text-amber-400 font-semibold"> {categories.length} categorías</span>. 
               Pagos seguros a través de <span className="text-amber-400 font-semibold">Nequi</span> y <span className="text-amber-400 font-semibold">Daviplata</span>.
             </p>
+
+            {/* Stats Section */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 max-w-4xl mx-auto">
+              {[
+                { icon: StatsIcon, number: totalProducts, label: "Productos" },
+                { icon: WalletIcon, number: categories.length, label: "Categorías" },
+                { icon: ShippingIcon, number: "100%", label: "Nacional" },
+                { icon: LockIcon, number: "24/7", label: "Seguridad" }
+              ].map((stat, index) => (
+                <div key={index} className="group p-4 bg-gradient-to-br from-slate-800/60 to-slate-900/60 rounded-2xl backdrop-blur-sm border border-amber-900/30 hover:border-amber-500/50 transition-all duration-500 transform hover:-translate-y-2">
+                  <div className="w-8 h-8 text-amber-400 mb-3 mx-auto group-hover:scale-110 transition-transform duration-300">
+                    <stat.icon />
+                  </div>
+                  <div className="text-2xl font-bold text-amber-300 mb-1">{stat.number}</div>
+                  <div className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300">{stat.label}</div>
+                </div>
+              ))}
+            </div>
 
             {/* Premium Features */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
               {[
-                { icon: ShippingIcon, title: "Envíos Nacionales", desc: "A todo el país con seguimiento" },
+                { icon: ShippingIcon, title: "Envíos Nacionales", desc: "A todo Colombia con seguimiento" },
                 { icon: LockIcon, title: "Pago Seguro", desc: "Transacciones 100% protegidas" },
                 { icon: WalletIcon, title: "Múltiples Métodos", desc: "Nequi, Daviplata y más" }
               ].map((feature, index) => (
@@ -79,24 +167,45 @@ const IntroSection = () => {
               ))}
             </div>
 
-            {/* CTA Button */}
-            <Link
-              href="/productos"
-              className="group relative inline-block px-12 py-4 bg-gradient-to-r from-amber-600 to-orange-600 rounded-full text-xl font-bold shadow-2xl transform hover:scale-110 transition-all duration-300 hover:shadow-amber-500/25 overflow-hidden"
-            >
-              <span className="relative z-10">Ver Productos</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-              <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-            </Link>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <Link
+                href="/productos"
+                className="group relative inline-block px-12 py-4 bg-gradient-to-r from-amber-600 to-orange-600 rounded-full text-xl font-bold shadow-2xl transform hover:scale-110 transition-all duration-300 hover:shadow-amber-500/25 overflow-hidden"
+              >
+                <span className="relative z-10">Ver Productos</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              </Link>
+
+              <Link
+                href="/about"
+                className="px-12 py-4 border-2 border-amber-400 text-amber-400 rounded-full text-xl font-bold hover:bg-amber-400 hover:text-slate-900 transition-all duration-300 backdrop-blur-sm"
+              >
+                Nuestra Historia
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* Payment Methods Section */}
-        <div className="bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm py-16">
-          <div className="container mx-auto text-center px-6">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
+        {/* Payment Methods Section with Background */}
+        <div className="bg-gradient-to-b from-slate-800/50 to-slate-900/50 backdrop-blur-sm py-16 relative">
+          <div className="absolute inset-0">
+            <Image
+              src={CAROUSEL_IMAGES.slide12}
+              alt="Métodos de pago seguros"
+              fill
+              className="object-cover opacity-10"
+            />
+          </div>
+          
+          <div className="container mx-auto text-center px-6 relative z-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
               Medios de Pago
             </h2>
+            <p className="text-lg text-gray-300 mb-12 max-w-2xl mx-auto">
+              Ofrecemos múltiples opciones de pago para tu comodidad y seguridad
+            </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {/* Efectivo */}
@@ -176,6 +285,11 @@ const IntroSection = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-1 h-16 bg-gradient-to-b from-amber-400 to-transparent rounded-full" />
       </div>
 
       {/* Decorative Elements */}

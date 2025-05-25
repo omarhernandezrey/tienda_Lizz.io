@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { GENERAL_IMAGES, UI_ICONS } from '../data/productsData';
 
 // SVG Icons
 const FacebookIcon = () => (

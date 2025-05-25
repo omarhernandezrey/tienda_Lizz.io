@@ -5,8 +5,8 @@ import emailjs from '@emailjs/browser';
 const EMAILJS_CONFIG = {
   serviceId: 'service_ay816cm', // Service ID real
   templateContactId: 'template_a2zgyat', // Template ID del primer "Contact Us"
-  templateOrderId: 'template_mcysftq', // Template ID del segundo "Contact Us" (para pedidos)
-  userId: 'kbekIMJKTHwICFZ', // Public Key real
+  templateOrderId: 'template_a2zgyat', // Usando el mismo template que funciona
+  userId: 'kbeklIHjiKTHwlCFZ', // Public Key real CORREGIDA
 };
 
 // Inicializar EmailJS con la clave pública real

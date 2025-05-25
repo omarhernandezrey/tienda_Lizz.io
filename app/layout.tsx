@@ -5,7 +5,6 @@ import { CartProvider } from "../context/CartContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import FloatingWhatsAppButton from "../components/FloatingWhatsAppButton";
-import TestEmail from "../components/TestEmail";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -62,9 +61,6 @@ export default function RootLayout({
 
           {/* WhatsApp Button */}
           <FloatingWhatsAppButton />
-
-          {/* Componente de prueba - TEMPORAL */}
-          <TestEmail />
 
           {/* Background Effects */}
           <div className="fixed inset-0 pointer-events-none opacity-5 z-0">
