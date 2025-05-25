@@ -1,195 +1,142 @@
-// components/Navbar.tsx
 "use client";
 
-import React, { useState, useContext } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import React, { useState, useEffect, useContext } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { CartContext } from "../context/CartContext";
 
-import {
-  FaShoppingCart,
-  FaFacebookF,
-  FaInstagram,
-  FaTwitter,
-  FaWhatsapp,
-  FaHome,
-  FaInfoCircle,
-  FaBoxOpen,
-  FaEnvelope,
-} from 'react-icons/fa';
-import { FiMenu, FiX } from 'react-icons/fi';
-import { CartContext } from '../context/CartContext';
+// SVG Icons
+const MenuIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+);
 
-const Navbar: React.FC = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+const CloseIcon = () => (
+  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+);
+
+const ShoppingBagIcon = () => (
+  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 15a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v12z"/>
+  </svg>
+);
+
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { cartItems } = useContext(CartContext);
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const navLinks = [
+    { href: "/", label: "Inicio" },
+    { href: "/productos", label: "Productos" },
+    { href: "/about", label: "Nosotros" },
+    { href: "/contacto", label: "Contacto" },
+  ];
 
   return (
-    <nav className="bg-gray-900 p-4 fixed w-full z-20 shadow-md">
-      <div className="container mx-auto flex items-center justify-between">
-        {/* Menú Hamburguesa para Móviles */}
-        <div className="flex items-center md:hidden">
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-white text-3xl focus:outline-none transition-transform transform hover:scale-110"
-          >
-            {menuOpen ? <FiX /> : <FiMenu />}
-          </button>
-        </div>
-
-        {/* Logo con animación de escala */}
-        <div className="flex-1 flex justify-center md:justify-start items-center">
-          <Link href="/">
-            <Image
-              src="/images/logo.png"
-              alt="Tienda de Bolsos"
-              width={50}
-              height={50}
-              className="rounded-full object-cover bg-transparent transition-transform transform hover:scale-125"
-            />
-          </Link>
-        </div>
-
-        {/* Carrito de Compras para Móviles */}
-        <div className="flex items-center md:hidden">
-          <Link
-            href="/cart"
-            className="text-white text-3xl relative transition-transform transform hover:scale-110"
-          >
-            <FaShoppingCart />
-            {totalItems > 0 && (
-              <span className="absolute -top-2 -right-3 bg-red-600 text-white rounded-full px-2 py-0.5 text-xs">
-                {totalItems}
-              </span>
-            )}
-          </Link>
-        </div>
-
-        {/* Menú para Escritorio */}
-        <div className="hidden md:flex flex-1 justify-end items-center space-x-8">
-          <Link
-            href="/"
-            className="nav-link text-white font-semibold transition-transform transform hover:scale-110 hover:text-gray-300 duration-200"
-          >
-            Home
-          </Link>
-          <Link
-            href="/about"
-            className="nav-link text-white font-semibold transition-transform transform hover:scale-110 hover:text-gray-300 duration-200"
-          >
-            Sobre Nosotros
-          </Link>
-          <Link
-            href="/productos"
-            className="nav-link text-white font-semibold transition-transform transform hover:scale-110 hover:text-gray-300 duration-200"
-          >
-            Productos
-          </Link>
-          <Link
-            href="/contacto"
-            className="nav-link text-white font-semibold transition-transform transform hover:scale-110 hover:text-gray-300 duration-200"
-          >
-            Contacto
-          </Link>
-          {/* Carrito de Compras */}
-          <Link
-            href="/cart"
-            className="text-white text-3xl relative transition-transform transform hover:scale-110"
-          >
-            <FaShoppingCart />
-            {totalItems > 0 && (
-              <span className="absolute -top-2 -right-3 bg-red-600 text-white rounded-full px-2 py-0.5 text-xs">
-                {totalItems}
-              </span>
-            )}
-          </Link>
-        </div>
-      </div>
-
-      {/* Menú Móvil */}
-      {menuOpen && (
-        <>
-          {/* Overlay */}
-          <div
-            className="fixed inset-0 bg-black opacity-60 md:hidden"
-            onClick={() => setMenuOpen(false)}
-          ></div>
-
-          {/* Menú Lateral */}
-          <div className="fixed inset-y-0 left-0 w-64 bg-gray-900 p-6 md:hidden transition-transform transform translate-x-0 flex flex-col justify-between">
-            <div className="flex flex-col items-center">
-              {/* Logo más pequeño con ajuste de contenido */}
-              <Image
-                src="/images/logo.png"
-                alt="Tienda de Bolsos"
-                width={80}
-                height={80}
-                className="rounded-full object-cover bg-transparent transition-transform transform hover:scale-125 mb-6"
-              />
-
-              {/* Enlaces del Menú con íconos y animación de escala */}
-              <ul className="space-y-4 w-full">
-                <li className="flex items-center space-x-2">
-                  <FaHome className="text-teal-400 text-xl" />
-                  <Link
-                    href="/"
-                    className="nav-link text-white text-lg font-medium transition-transform transform hover:scale-110 hover:bg-gray-800 p-2 rounded-md duration-200 flex-1"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <FaInfoCircle className="text-teal-400 text-xl" />
-                  <Link
-                    href="/about"
-                    className="nav-link text-white text-lg font-medium transition-transform transform hover:scale-110 hover:bg-gray-800 p-2 rounded-md duration-200 flex-1"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Sobre Nosotros
-                  </Link>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <FaBoxOpen className="text-teal-400 text-xl" />
-                  <Link
-                    href="/productos"
-                    className="nav-link text-white text-lg font-medium transition-transform transform hover:scale-110 hover:bg-gray-800 p-2 rounded-md duration-200 flex-1"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Productos
-                  </Link>
-                </li>
-                <li className="flex items-center space-x-2">
-                  <FaEnvelope className="text-teal-400 text-xl" />
-                  <Link
-                    href="/contacto"
-                    className="nav-link text-white text-lg font-medium transition-transform transform hover:scale-110 hover:bg-gray-800 p-2 rounded-md duration-200 flex-1"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    Contacto
-                  </Link>
-                </li>
-              </ul>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      isScrolled 
+        ? "bg-slate-900/95 backdrop-blur-lg border-b border-amber-900/30 shadow-2xl" 
+        : "bg-transparent"
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-3 group">
+            <div className="relative">
+              <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <span className="text-2xl font-bold text-white">EC</span>
+              </div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-orange-400 to-red-500 rounded-full animate-pulse" />
             </div>
+            <div className="hidden sm:block">
+              <h1 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">
+                Elegancia en Cuero
+              </h1>
+              <p className="text-xs text-gray-400">Bolsos de Lujo Artesanales</p>
+            </div>
+          </Link>
 
-            {/* Redes Sociales */}
-            <div className="mt-8 flex justify-around space-x-4">
-              <Link href="https://www.facebook.com/share/15Zz37gpUp/">
-                <FaFacebookF className="text-white text-2xl hover:text-teal-400 transition duration-200" />
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="relative px-4 py-2 text-gray-300 hover:text-amber-300 transition-colors duration-300 group"
+              >
+                <span className="relative z-10 font-medium">{link.label}</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-600/0 to-orange-600/0 group-hover:from-amber-600/20 group-hover:to-orange-600/20 rounded-lg transition-all duration-300" />
+                <div className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-amber-400 to-orange-500 group-hover:w-full group-hover:left-0 transition-all duration-300" />
               </Link>
-              <Link href="https://www.instagram.com/lederliz_accesorios/profilecard/?igsh=MTkwaDRpcXBmbGJkaQ==">
-                <FaInstagram className="text-white text-2xl hover:text-teal-400 transition duration-200" />
+            ))}
+          </div>
+
+          {/* Cart and Mobile Menu */}
+          <div className="flex items-center space-x-4">
+            {/* Cart Button */}
+            <Link href="/cart" className="relative group">
+              <div className="w-12 h-12 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-amber-600 hover:to-orange-600 rounded-xl flex items-center justify-center transition-all duration-300 border border-amber-900/30 hover:border-amber-500/50 shadow-lg">
+                <ShoppingBagIcon />
+              </div>
+              {totalItems > 0 && (
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                  <span className="text-xs font-bold text-white">{totalItems}</span>
+                </div>
+              )}
+            </Link>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden w-12 h-12 bg-gradient-to-br from-slate-700 to-slate-800 hover:from-amber-600 hover:to-orange-600 rounded-xl flex items-center justify-center transition-all duration-300 border border-amber-900/30 hover:border-amber-500/50"
+            >
+              {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`md:hidden transition-all duration-500 overflow-hidden ${
+          isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}>
+          <div className="py-6 space-y-4 bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-lg rounded-2xl border border-amber-900/30 mt-4">
+            {navLinks.map((link, index) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-6 py-3 text-gray-300 hover:text-amber-300 hover:bg-amber-900/20 transition-all duration-300 border-l-4 border-transparent hover:border-amber-500"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <span className="font-medium">{link.label}</span>
               </Link>
-              <Link href="#">
-                <FaTwitter className="text-white text-2xl hover:text-teal-400 transition duration-200" />
-              </Link>
-              <Link href="https://wa.me/573142470366">
-                <FaWhatsapp className="text-white text-2xl hover:text-teal-400 transition duration-200" />
-              </Link>
+            ))}
+            
+            {/* Mobile Cart Info */}
+            <div className="px-6 py-3 border-t border-amber-900/30 mt-4">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-400">Productos en carrito:</span>
+                <span className="text-amber-300 font-bold">{totalItems}</span>
+              </div>
             </div>
           </div>
-        </>
-      )}
+        </div>
+      </div>
     </nav>
   );
 };
